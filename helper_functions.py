@@ -32,6 +32,7 @@ import itertools
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
+import math 
 
 # Our function needs a different name to sklearn's plot_confusion_matrix
 def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_size=15, norm=False, savefig=False): 
@@ -310,3 +311,28 @@ def plot_random_images(target_dir, scale = 3, rows=3, cols=6):
   return random_img_path
 
 
+def plot_image_predictions(img_arr, true_label, pred_label, prediction_score, columns=10, scale =3):
+
+  rows = math.ceil(len(img_arr)/columns)
+
+  figsize = (columns*scale,rows*(scale+1))
+  
+  plt.figure(figsize=figsize)
+
+  for i, img_path in enumerate(img_arr):
+    img_path = img_path.decode("utf-8") 
+    row = int(i/columns)
+    col = i%columns
+    predicted_class = pred_label[i]
+    actual_class = true_label[i]
+    pred_score = round(prediction_score[i],2)
+    img = mpimg.imread(img_path)
+    ax = plt.subplot(rows,columns,i+1)
+    plt.imshow(img, cmap=plt.cm.binary)
+    title_color = "green"
+    if predicted_class != actual_class:
+      title_color = "red"
+
+    plt.title(f"actual: {actual_class}\npred:{predicted_class}\nconf: {str(pred_score)}", color=title_color)
+
+    plt.axis(False)
