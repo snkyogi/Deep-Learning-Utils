@@ -1,0 +1,6 @@
+COPY INTO your_table
+FROM 's3://your_bucket/your_file.csv.gz'
+FILE_FORMAT = (TYPE = 'CSV' COMPRESSION = 'GZIP')
+MAX_FILE_SIZE = 10000000 -- Limit the size to ensure only a few records are loaded
+ON_ERROR = 'CONTINUE' -- Continue loading if any errors occur
+LIMIT = 10; -- Load only the first 10 records
